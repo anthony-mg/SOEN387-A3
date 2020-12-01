@@ -2,6 +2,7 @@ package servlets;
 import businesslayer.messageboardmanager.Attachment;
 import businesslayer.messageboardmanager.Post;
 import businesslayer.messageboardmanager.PostManager;
+import helpers.PostHelper;
 import dao.UserPostDao;
 
 import javax.servlet.ServletException;
@@ -119,9 +120,10 @@ public class PostsServlet extends HttpServlet {
 
     private void viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HttpSession ses = request.getSession();
+        String userName = (String)ses.getAttribute("user");
 
-        request.setAttribute("attachmentNames", post.getAttachmentNames());
-        request.setAttribute("post", post);
+        request.setAttribute("helper", new PostHelper(post, userName));
         request.getRequestDispatcher("posts/post-view.jsp").forward(request, response);
     }
 
