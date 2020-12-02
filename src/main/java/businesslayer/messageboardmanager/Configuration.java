@@ -8,6 +8,7 @@ import javax.json.JsonReader;
 
 final public class  Configuration {
 	private long maxPosts;
+	private String adminGroupName;
 	private JsonObject jo;
 	private String filepath;
 	
@@ -24,6 +25,7 @@ final public class  Configuration {
 			JsonReader jr = Json.createReader(new FileInputStream(filepath));
 			jo = jr.readObject();
 			maxPosts = (long) jo.getInt("maxposts");
+			adminGroupName = jo.getString("adminGroupName");
 		} catch (FileNotFoundException e) {
 			setDefaults();
 		}
@@ -32,6 +34,8 @@ final public class  Configuration {
 	public long getMaxPosts() {
 		return maxPosts;
 	}
+
+	public String getAdminGroupName() { return adminGroupName; }
 	
 	private void setDefaults() {
 		maxPosts = 10;
