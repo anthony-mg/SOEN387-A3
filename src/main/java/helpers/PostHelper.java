@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class PostHelper implements java.io.Serializable{
     private Post post;
+    private int postId;
     private String user;
     private String title;
     private String createdDate;
@@ -22,6 +23,7 @@ public class PostHelper implements java.io.Serializable{
     public PostHelper(Post post, String userName){
         setPost(post);
         setUser(userName);
+        setPostId(post.getPostId());
         setTitle(post.getTitle());
         setText(post.getText());
         setCreatedDate(post.getDateString());
@@ -34,6 +36,14 @@ public class PostHelper implements java.io.Serializable{
 
     public Post getPost(){
         return this.post;
+    }
+
+    public int getPostId(){
+        return postId;
+    }
+
+    public void setPostId(int postId){
+        this.postId = postId;
     }
 
     public void setTitle(String title){

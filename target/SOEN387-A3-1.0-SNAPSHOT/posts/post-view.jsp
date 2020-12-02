@@ -46,6 +46,14 @@
             </div>
             <%=helper.getAttachments()%>
         </fieldset>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <a target='_blank' class="btn btn-outline-success btn-block" href="${pageContext.request.contextPath}/download?postId=<%=helper.getPostId()%>">Download Post</a>
+            </div>
+            <div class="col-md-6">
+                <a class="btn btn-outline-warning btn-block" href="#">View XML</a>
+            </div>
+        </div>
         <%=helper.showEdit()%>
     </form>
 </div>
