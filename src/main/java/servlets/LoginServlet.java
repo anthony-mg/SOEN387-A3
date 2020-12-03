@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         String username = ua.getUsernameFromEmail(email);
         String password = request.getParameter("password");
 
-        System.out.println("In Login Servlet:" + password);
+        //System.out.println("In Login Servlet:" + password);
         HttpSession session = request.getSession();
         result = ua.verifyUser(email,password);
         if(result) {
