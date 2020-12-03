@@ -12,10 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.http.Part;
 import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -26,7 +23,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 
-@WebServlet(name="PostsServlet", urlPatterns = {"/posts", "/view", "/edit", "/delete", "/deleteAttach", "/newPost", "/searchPage", "/addPost", "/modify","/editAttach", "/searchPosts", "/download"})
+@WebServlet(name="PostsServlet", urlPatterns = {"/posts", "/view", "/edit", "/delete", "/deleteAttach", "/newPost", "/searchPage", "/addPost", "/modify","/editAttach", "/searchPosts", "/download", "/viewXml"})
 @MultipartConfig(fileSizeThreshold = 1024*1024*10, maxFileSize = 1024*1024*30, maxRequestSize = 1024*1024*50)
 public class PostsServlet extends HttpServlet {
     private static final long serialVersionUID = 4L;
@@ -98,6 +95,9 @@ public class PostsServlet extends HttpServlet {
             case "/download":
                 downloadPost(request, response);
                 break;
+            case "/viewXml":
+                viewXml(request, response);
+                break;
             default:
                 request.getRequestDispatcher("posts/list-posts.jsp").forward(request, response);
                 break;
@@ -138,9 +138,7 @@ public class PostsServlet extends HttpServlet {
         request.getRequestDispatcher("posts/post-view.jsp").forward(request, response);
     }
 
-    private void downloadPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
-        HashMap<Integer, String> attachments = post.getAttachmentNames();
+    private PostXML transformXml(Post post, HashMap<Integer, String> attachments){
         PostXML postXml = new PostXML();
         postXml.setPostId(post.getPostId());
         postXml.setUser(post.getUser());
@@ -158,6 +156,35 @@ public class PostsServlet extends HttpServlet {
                 postXml.addAttachment(attachment);
             }
         }
+        return postXml;
+    }
+
+    private void viewXml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HashMap<Integer, String> attachments = post.getAttachmentNames();
+        ByteArrayOutputStream postOutput = new ByteArrayOutputStream();
+        PostXML postXml = transformXml(post, attachments);
+
+        try {
+            response.setContentType("application/xml;charset=UTF-8");
+            JAXBContext jaxbContext = JAXBContext.newInstance(PostXML.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            jaxbMarshaller.marshal(postXml, postOutput);
+            jaxbMarshaller.marshal(postXml, System.out);
+            OutputStream os = response.getOutputStream();
+            postOutput.writeTo(os);
+
+        } catch (JAXBException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void downloadPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HashMap<Integer, String> attachments = post.getAttachmentNames();
+        PostXML postXml = transformXml(post, attachments);
 
         try {
             File postFile = new File("post.xml");
