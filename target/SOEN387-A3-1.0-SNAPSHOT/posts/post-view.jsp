@@ -23,11 +23,16 @@
 <body class="bg-light text-center">
 <div class="container-fluid">
     <jsp:include page = "nav-bar.jsp" flush = "true" />
+<<<<<<< HEAD
+=======
+    <jsp:useBean id="helper" class="helpers.PostHelper" type="helpers.PostHelper" scope="request"/>
+>>>>>>> presentation-pattern
     <form class="form-postInfo">
         <fieldset disabled="disabled">
             <h2>Post Info</h2>
             <div class="form-group">
                 <label for="title">Title </label>
+<<<<<<< HEAD
                 <input type="text" class="form-control" name="title" id="title" value="${post.title}">
             </div>
             <div class="form-group">
@@ -64,6 +69,34 @@
         <c:if test='${post.user==current_user}'>
             <a class="btn btn-info btn-lg btn-secondary btn-block" href="${pageContext.request.contextPath}/edit?postId=${post.postId}">edit</a>
         </c:if>
+=======
+                <input type="text" class="form-control" name="title" id="title" value="<%=helper.getTitle()%>">
+            </div>
+            <div class="form-group">
+                <label for="author">Author </label>
+                <input type="text" class="form-control" name="author" id="author" value="<%=helper.getUser()%>">
+            </div>
+            <div class="form-group">
+                <label for="created">Created Date </label>
+                <input type="text" class="form-control" name="created" id="created" value="<%=helper.getCreatedDate()%>">
+            </div>
+            <%=helper.getUpdatedDate()%>
+            <div class="form-group">
+                <label for="postText">Text </label>
+                <textarea name="text" id="postText" rows="10" class="form-control"><%=helper.getText()%></textarea>
+            </div>
+            <%=helper.getAttachments()%>
+        </fieldset>
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <a target='_blank' class="btn btn-outline-success btn-block" href="${pageContext.request.contextPath}/download?postId=<%=helper.getPostId()%>">Download Post</a>
+            </div>
+            <div class="col-md-6">
+                <a target='_blank' class="btn btn-outline-warning btn-block" href="${pageContext.request.contextPath}/viewXml?postId=<%=helper.getPostId()%>">View XML</a>
+            </div>
+        </div>
+        <%=helper.showEdit()%>
+>>>>>>> presentation-pattern
     </form>
 </div>
 </body>

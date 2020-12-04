@@ -54,7 +54,11 @@
 <c:if test="${sessionScope.deletedAttachment != null}">
     <div class="alert alert-danger alert-dismissible fade show">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
+<<<<<<< HEAD
         <p>A post attachment has been deleted</p>
+=======
+        <p>A post xmlAttachment has been deleted</p>
+>>>>>>> presentation-pattern
     </div>
     <c:remove var="deletedAttachment" scope="session" />
 </c:if>

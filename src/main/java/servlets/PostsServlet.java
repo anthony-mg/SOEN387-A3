@@ -2,23 +2,28 @@ package servlets;
 import businesslayer.messageboardmanager.Attachment;
 import businesslayer.messageboardmanager.Post;
 import businesslayer.messageboardmanager.PostManager;
+import helpers.*;
 import dao.UserPostDao;
+import helpers.XmlAttachment;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.IOException;
+import javax.xml.bind.JAXBException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
-@WebServlet(name="PostsServlet", urlPatterns = {"/posts", "/view", "/edit", "/delete", "/deleteAttach", "/newPost", "/searchPage", "/addPost", "/modify","/editAttach", "/searchPosts"})
+
+@WebServlet(name="PostsServlet", urlPatterns = {"/posts", "/view", "/edit", "/delete", "/deleteAttach", "/newPost", "/searchPage", "/addPost", "/modify","/editAttach", "/searchPosts", "/download", "/viewXml"})
 @MultipartConfig(fileSizeThreshold = 1024*1024*10, maxFileSize = 1024*1024*30, maxRequestSize = 1024*1024*50)
 public class PostsServlet extends HttpServlet {
     private static final long serialVersionUID = 4L;
@@ -29,6 +34,7 @@ public class PostsServlet extends HttpServlet {
     public ArrayList<String> hashTags = new ArrayList<String>();
     private ZonedDateTime from;
     private ZonedDateTime to;
+    private final int BUFFER_SIZE = 4096; //needed to read the chat file as a byte-stream
 
     //Init method to initialize and setup dummy posts for testing
     public void init() {
@@ -86,6 +92,12 @@ public class PostsServlet extends HttpServlet {
             case "/searchPage":
                 displaySearchPage(request, response);
                 break;
+            case "/download":
+                downloadPost(request, response);
+                break;
+            case "/viewXml":
+                viewXml(request, response);
+                break;
             default:
                 request.getRequestDispatcher("posts/list-posts.jsp").forward(request, response);
                 break;
@@ -119,10 +131,99 @@ public class PostsServlet extends HttpServlet {
 
     private void viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HttpSession ses = request.getSession();
+        String userName = (String)ses.getAttribute("user");
 
-        request.setAttribute("attachmentNames", post.getAttachmentNames());
-        request.setAttribute("post", post);
+        request.setAttribute("helper", new PostHelper(post, userName));
         request.getRequestDispatcher("posts/post-view.jsp").forward(request, response);
+    }
+
+    private PostXML transformXml(Post post, HashMap<Integer, String> attachments){
+        PostXML postXml = new PostXML();
+        postXml.setPostId(post.getPostId());
+        postXml.setUser(post.getUser());
+        postXml.setTitle(post.getTitle());
+        postXml.setCreatedDate(post.getDateString());
+        postXml.setText(post.getText());
+        if(post.isUpdated())
+            postXml.setUpdatedDate(post.getUpdatedDate());
+
+        if(!attachments.isEmpty()) {
+            for (Map.Entry file : attachments.entrySet()) {
+                XmlAttachment attachment = new XmlAttachment();
+                attachment.setAttachmentId((Integer) file.getKey());
+                attachment.setAttachmentName((String) file.getValue());
+                postXml.addAttachment(attachment);
+            }
+        }
+        return postXml;
+    }
+
+    private void viewXml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HashMap<Integer, String> attachments = post.getAttachmentNames();
+        ByteArrayOutputStream postOutput = new ByteArrayOutputStream();
+        PostXML postXml = transformXml(post, attachments);
+
+        try {
+            response.setContentType("application/xml;charset=UTF-8");
+            JAXBContext jaxbContext = JAXBContext.newInstance(PostXML.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            jaxbMarshaller.marshal(postXml, postOutput);
+            jaxbMarshaller.marshal(postXml, System.out);
+            OutputStream os = response.getOutputStream();
+            postOutput.writeTo(os);
+
+        } catch (JAXBException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void downloadPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        HashMap<Integer, String> attachments = post.getAttachmentNames();
+        PostXML postXml = transformXml(post, attachments);
+
+        try {
+            File postFile = new File("post.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(PostXML.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            jaxbMarshaller.marshal(postXml, postFile);
+            jaxbMarshaller.marshal(postXml, System.out);
+            FileInputStream fileStream = new FileInputStream(postFile);
+            String mimeType = (getServletContext().getMimeType("post.xml") == null) ? "application/octet-stream" : getServletContext().getMimeType("post.xml");
+
+            response.setContentType(mimeType);
+            response.setContentLength((int) postFile.length());
+            response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", postFile.getName()));
+            disableCache(response);
+
+            //Write the file as a stream of bytes
+            OutputStream fileOutput = response.getOutputStream();
+
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytesRead;
+
+            while ((bytesRead = fileStream.read(buffer)) > 0) {
+                fileOutput.write(buffer, 0, bytesRead);
+            }
+
+            fileStream.close();
+            fileOutput.close();
+        } catch (JAXBException e){
+            e.printStackTrace();
+        }
+
+        //request.getRequestDispatcher("posts/post-view.jsp").forward(request, response);
+    }
+
+    public void disableCache(HttpServletResponse response){
+        response.setHeader("Pragma","no-cache");
+        response.setHeader("Cache-Control", "no-cache, no-store");
+        response.setDateHeader("Expires", 0);
     }
 
     //Method to display the edit post form

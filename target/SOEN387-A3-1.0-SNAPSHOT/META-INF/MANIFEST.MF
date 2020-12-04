@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
+<<<<<<< HEAD
 Built-By: Anthony
+=======
+Built-By: Ivan
+>>>>>>> presentation-pattern
 Build-Jdk: 1.8.0_261
 
