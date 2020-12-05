@@ -2,6 +2,7 @@ package servlets;
 
 
 
+import businesslayer.factory.UserManagerFactory;
 import usermanagerIMP.*;
 import util.Configuration;
 
@@ -16,12 +17,13 @@ import java.io.IOException;
 @WebServlet(value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    ///public UserAuthentificator ua;
+
+    //public UserAuthentificator ua;
     public UserManager um;
     public void init() {
-        
         //ua = new UserAuthentificator(getServletContext().getRealPath("/WEB-INF/users.json").toString());
-        um = new UserManager(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
+        //um = new UserManager(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
+        um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

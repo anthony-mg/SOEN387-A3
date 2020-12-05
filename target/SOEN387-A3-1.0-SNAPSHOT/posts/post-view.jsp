@@ -23,53 +23,12 @@
 <body class="bg-light text-center">
 <div class="container-fluid">
     <jsp:include page = "nav-bar.jsp" flush = "true" />
-<<<<<<< HEAD
-=======
     <jsp:useBean id="helper" class="helpers.PostHelper" type="helpers.PostHelper" scope="request"/>
->>>>>>> presentation-pattern
     <form class="form-postInfo">
         <fieldset disabled="disabled">
             <h2>Post Info</h2>
             <div class="form-group">
                 <label for="title">Title </label>
-<<<<<<< HEAD
-                <input type="text" class="form-control" name="title" id="title" value="${post.title}">
-            </div>
-            <div class="form-group">
-                <label for="author">Author </label>
-                <input type="text" class="form-control" name="author" id="author" value="${post.user}">
-            </div>
-            <div class="form-group">
-                <label for="created">Created Date </label>
-                <input type="text" class="form-control" name="created" id="created" value="${post.dateString}">
-            </div>
-            <c:if test="${post.isUpdated()}">
-                <div class="form-group">
-                    <label for="updated">Updated Date </label>
-                    <input type="text" class="form-control" name="updated" id="updated" value="${post.getUpdatedDate()}">
-                </div>
-            </c:if>
-            <div class="form-group">
-                <label for="postText">Text </label>
-                <textarea name="text" id="postText" rows="10" class="form-control">${post.text}</textarea>
-            </div>
-            <c:if test="${not empty attachmentNames}">
-                <div class="form-group">
-                    <label>Attachments </label>
-                    <c:forEach var="file" items="${attachmentNames}">
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <a target="_blank" href="FileDownloadServlet?postId=${post.postId}&attachmentId=${file.key}">${file.value}</a>
-                        </li>
-                    </c:forEach>
-                </div>
-            </c:if>
-        </fieldset>
-        <c:set var="current_user" value='<%=request.getSession().getAttribute("user")%>'/>
-
-        <c:if test='${post.user==current_user}'>
-            <a class="btn btn-info btn-lg btn-secondary btn-block" href="${pageContext.request.contextPath}/edit?postId=${post.postId}">edit</a>
-        </c:if>
-=======
                 <input type="text" class="form-control" name="title" id="title" value="<%=helper.getTitle()%>">
             </div>
             <div class="form-group">
@@ -96,7 +55,6 @@
             </div>
         </div>
         <%=helper.showEdit()%>
->>>>>>> presentation-pattern
     </form>
 </div>
 </body>

@@ -20,13 +20,11 @@ public class UserManager implements UserManagerInterface{
 	private final String groupFilepath;
 	
 	public UserManager(String userFilepath, String groupFilepath) {
-		
 		this.userFilepath = userFilepath;
 		this.groupFilepath = groupFilepath;
 		loadUsers();
 	}
-	
-	
+
 	private void loadUsers() {
 		this.users = new HashMap<String,String>();
 		try {
