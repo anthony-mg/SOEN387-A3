@@ -2,8 +2,7 @@ package servlets;
 
 
 
-import businesslayer.authentification.UserAuthentificator;
-
+import usermanagerIMP.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,23 +14,23 @@ import java.io.IOException;
 @WebServlet(value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    public UserAuthentificator ua;
+    ///public UserAuthentificator ua;
+    public UserManager um;
     public void init() {
         
-        ua = new UserAuthentificator(getServletContext().getRealPath("/WEB-INF/users.json").toString());
-
+        //ua = new UserAuthentificator(getServletContext().getRealPath("/WEB-INF/users.json").toString());
+        um = new UserManager(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         boolean result = false;
         String email = request.getParameter("email");
-        String username = ua.getUsernameFromEmail(email);
+        String username = um.getUsernameFromEmail(email);
         String password = request.getParameter("password");
 
-        System.out.println("In Login Servlet:" + password);
         HttpSession session = request.getSession();
-        result = ua.verifyUser(email,password);
+        result = um.verifyUser(username,password);
         if(result) {
             session.setAttribute("email",email);
             session.setAttribute("user", username);

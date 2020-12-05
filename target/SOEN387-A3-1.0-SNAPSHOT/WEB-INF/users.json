@@ -1,7 +1,6 @@
 {
     "users": [
         {
-<<<<<<< HEAD
             "name": "administrator",
             "password": "cf835de3d4ea01367c45e412e7a9393a85a4e40af149ed8c3ed6c37c05b67b27813d7ff8072c1035cedd19415adf17128d63186f05f0d656002b0ca1c34f44a0",
             "email": "administrator@gmail.com"
@@ -125,21 +124,6 @@
             "name": "cardinal2",
             "password": "d92b7224bf9594c22026eb26ba98483f00442dfed4924dc2185a657e5c0020c6bb632b7f0a28a6ee7fde0a518f0a2c01ea7ea8303cfd078b422bee742aaa1f1a",
             "email": "cardinal2@gmail.com"
-=======
-            "name": "ABC",
-            "password": "409175c963c289691c89836d305ea56b39c70fb118b9bc8cfe1fcc3e5e7a8ff531f7e1c0c875bde21a5a1c70a85e64d78e14f274b87e62cc6cf9c8a00b101568",
-            "email": "ABC@gmail.com"
-        },
-        {
-            "name": "BBC",
-            "password": "a39561150064425122cc1ab8cceee8ea491f294c11d0f7eecc53f79299c74d1248c8b568c4bc59d781aa7e0335f5eadb60b75739d4d3a56d9ada0528bd1811aa",
-            "email": "BBC@gmail.com"
-        },
-        {
-            "name": "CBC",
-            "password": "9176de27f84caaf71e82e0f765a258c3f747a397bda3f113f0edd8e0b340eb0edcd14ea90063fb712ec8114a3ff1f265b9298af8b9af486f550bde9c2b3901e8",
-            "email": "CBC@gmail.com"
->>>>>>> presentation-pattern
         }
     ]
 }

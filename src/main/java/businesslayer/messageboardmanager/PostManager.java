@@ -1,6 +1,7 @@
 package businesslayer.messageboardmanager;
 
 import dao.UserPostDao;
+import util.Configuration;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
