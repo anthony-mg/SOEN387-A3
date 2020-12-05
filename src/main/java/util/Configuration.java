@@ -9,6 +9,7 @@ import javax.json.JsonReader;
 final public class  Configuration {
 	private long maxPosts;
 	private String adminGroupName;
+	private String className;
 	private JsonObject jo;
 	private String filepath;
 	
@@ -17,7 +18,7 @@ final public class  Configuration {
 	}
 	
 	public Configuration() {
-		filepath = "config.json";
+		filepath = "./config.json";
 	}
 	
 	public void init() {
@@ -26,6 +27,7 @@ final public class  Configuration {
 			jo = jr.readObject();
 			maxPosts = (long) jo.getInt("maxposts");
 			adminGroupName = jo.getString("adminGroupName");
+			className = jo.getString("className");
 		} catch (FileNotFoundException e) {
 			setDefaults();
 		}
@@ -36,9 +38,13 @@ final public class  Configuration {
 	}
 
 	public String getAdminGroupName() { return adminGroupName; }
+
+	public String getClassName() { return className; }
 	
 	private void setDefaults() {
 		maxPosts = 10;
+		adminGroupName = "admin";
+		className = "usermanagerIMP.UserManager";
 	}
 	
 	

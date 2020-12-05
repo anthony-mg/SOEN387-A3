@@ -21,6 +21,7 @@ public class PostManager {
 		//PostManager.init from some sort of DOA
 		config = new Configuration("./config.json");
 		config.init();
+		System.out.println(config.getClassName());
 		posts = new ArrayList<Post>();
 	}
 

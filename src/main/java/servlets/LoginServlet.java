@@ -3,6 +3,8 @@ package servlets;
 
 
 import usermanagerIMP.*;
+import util.Configuration;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
