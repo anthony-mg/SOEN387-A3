@@ -30,7 +30,6 @@ public class LoginServletTest {
 
 
     @Before
-
     public void setUp() {
         servlet = new LoginServlet();
         //UserManager um = UserManagerFactory.getInstance().create(mockRequest.getServletContext().getRealPath("/WEB-INF/users.json").toString(), mockRequest.getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());

@@ -29,9 +29,7 @@
         "housefly": "insect",
         "hawk": "bird",
         "eagle": "bird",
-        "cardinal": "bird",
-        "test": "test2",
-        "test2": "test"
+        "cardinal": "bird"
     },
     "membership": {
         "administrator": [
