@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     public void init() {
         //ua = new UserAuthentificator(getServletContext().getRealPath("/WEB-INF/users.json").toString());
         //um = new UserManager(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
-        um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
+        um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definitions.json").toString());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
