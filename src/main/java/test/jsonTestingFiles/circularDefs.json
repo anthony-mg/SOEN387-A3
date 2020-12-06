@@ -1,0 +1,116 @@
+{
+    "group_names": [
+        "admin",
+        "mammal",
+        "insect",
+        "bird",
+        "dog",
+        "elephant",
+        "panda",
+        "butterfly",
+        "grasshopper",
+        "housefly",
+        "hawk",
+        "eagle",
+        "cardinal",
+        "testGroup",
+        "testGroup2"
+    ],
+    "group_definitions": {
+        "admin": "",
+        "mammal": "admin",
+        "insect": "admin",
+        "bird": "admin",
+        "dog": "mammal",
+        "elephant": "mammal",
+        "panda": "mammal",
+        "butterfly": "insect",
+        "grasshopper": "insect",
+        "housefly": "insect",
+        "hawk": "bird",
+        "eagle": "bird",
+        "cardinal": "bird",
+        "testGroup": "testGroup2",
+        "testGroup2": "testGroup"
+    },
+    "membership": {
+        "testUser": [
+            "testGroup"
+        ],
+        "administrator": [
+            "admin"
+        ],
+        "mammal1": [
+            "mammal"
+        ],
+        "mammal2": [
+            "mammal"
+        ],
+        "insect1": [
+            "insect"
+        ],
+        "insect2": [
+            "insect"
+        ],
+        "bird1": [
+            "bird"
+        ],
+        "bird2": [
+            "bird"
+        ],
+        "dog1": [
+            "dog"
+        ],
+        "dog2": [
+            "dog"
+        ],
+        "elephant1": [
+            "elephant"
+        ],
+        "elephant2": [
+            "elephant"
+        ],
+        "panda1": [
+            "panda"
+        ],
+        "panda2": [
+            "panda"
+        ],
+        "butterfly1": [
+            "butterfly"
+        ],
+        "butterfly2": [
+            "butterfly"
+        ],
+        "grasshopper1": [
+            "grasshopper"
+        ],
+        "grasshopper2": [
+            "grasshopper"
+        ],
+        "housefly1": [
+            "housefly"
+        ],
+        "housefly2": [
+            "housefly"
+        ],
+        "hawk1": [
+            "hawk"
+        ],
+        "hawk2": [
+            "hawk"
+        ],
+        "eagle1": [
+            "eagle"
+        ],
+        "eagle2": [
+            "eagle"
+        ],
+        "cardinal1": [
+            "cardinal"
+        ],
+        "cardinal2": [
+            "cardinal"
+        ]
+    }
+}
