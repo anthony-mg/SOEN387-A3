@@ -41,6 +41,23 @@
                 <label for="postText">Text </label>
                 <textarea required name="postText" id="postText" rows="10" class="form-control">${post.text}</textarea>
             </div>
+            <c:if test="${post != null}">
+            <div class="form-group">
+                <label for="groupValue">Post Group </label>
+                <input disabled class="form-control" type="text" id="groupValue" name="groupValue" value="${post.group}">
+            </div>
+            </c:if>
+            <div class="form-group">
+                <label for="groups">Groups</label><br>
+                <select id="groups" class="form-control" name="groups" size="5">
+                    <option value="public" selected>public</option>
+                    <c:if test="${groups != null}">
+                        <c:forEach var="group" items="${groups}">
+                            <option value="${group}">${group}</option>
+                        </c:forEach>
+                    </c:if>
+                </select><br>
+            </div>
             <div class="form-group">
                 <label for="attach">Upload attachments </label>
                 <input class="form-control" type="file" name="file" multiple="multiple" id="attach">

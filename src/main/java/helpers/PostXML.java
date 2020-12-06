@@ -12,6 +12,8 @@ public class PostXML {
     private int postId;
     @XmlElement(name = "title")
     private String title;
+    @XmlElement(name = "group")
+    private String group;
     @XmlElement(name = "user")
     private String user;
     @XmlElement(name = "createdDate")
@@ -48,6 +50,10 @@ public class PostXML {
 
     public void setTitle(String title){
         this.title = title;
+    }
+
+    public void setGroup(String group){
+        this.group = group;
     }
 
     public void setUser(String user){

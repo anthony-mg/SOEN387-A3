@@ -3,6 +3,7 @@ package servlets;
 
 
 import businesslayer.factory.UserManagerFactory;
+import exceptions.CircularGroupDefinitionException;
 import usermanagerIMP.*;
 import util.Configuration;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -23,7 +25,7 @@ public class LoginServlet extends HttpServlet {
     public void init() {
         //ua = new UserAuthentificator(getServletContext().getRealPath("/WEB-INF/users.json").toString());
         //um = new UserManager(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
-        um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definition.json").toString());
+        um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definitions.json").toString());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +38,12 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         result = um.verifyUser(username,password);
         if(result) {
+            try {
+                ArrayList<String> permissions = um.getGroupsForUser(username);
+                session.setAttribute("permissions",permissions);
+            } catch (CircularGroupDefinitionException e) {
+                e.printStackTrace();
+            }
             session.setAttribute("email",email);
             session.setAttribute("user", username);
             session.setAttribute("welcome", true);

@@ -39,6 +39,10 @@
                 <label for="created">Created Date </label>
                 <input type="text" class="form-control" name="created" id="created" value="<%=helper.getCreatedDate()%>">
             </div>
+            <div class="form-group">
+                <label for="created">Group </label>
+                <input type="text" class="form-control" name="group" id="group" value="<%=helper.getGroup()%>">
+            </div>
             <%=helper.getUpdatedDate()%>
             <div class="form-group">
                 <label for="postText">Text </label>

@@ -119,13 +119,21 @@ public class PostsServlet extends HttpServlet {
 
     //Method to display posts
     private void displayPosts(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        ArrayList<Post> posts = pm.search();
+        ArrayList<String> permissions = getUserPermissions(request);
+        ArrayList<Post> posts = pm.search_by_groups(permissions);
+        if(posts.isEmpty()){
+            HttpSession session = request.getSession();
+            session.setAttribute("emptyPosts", true);
+        }
+
         request.setAttribute("posts", posts);
         request.getRequestDispatcher("posts/list-posts.jsp").forward(request, response);
     }
 
     //Method to display a new post form
     private void displayNewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<String> permissions = getUserPermissions(request);
+        request.setAttribute("groups", permissions);
         request.getRequestDispatcher("/posts/post-data.jsp").forward(request, response);
     }
 
@@ -133,8 +141,10 @@ public class PostsServlet extends HttpServlet {
         Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
         HttpSession ses = request.getSession();
         String userName = (String)ses.getAttribute("user");
+        ArrayList<String> permissions = getUserPermissions(request);
+        boolean isAdmin = permissions.contains("admin");
 
-        request.setAttribute("helper", new PostHelper(post, userName));
+        request.setAttribute("helper", new PostHelper(post, userName, isAdmin));
         request.getRequestDispatcher("posts/post-view.jsp").forward(request, response);
     }
 
@@ -143,6 +153,7 @@ public class PostsServlet extends HttpServlet {
         postXml.setPostId(post.getPostId());
         postXml.setUser(post.getUser());
         postXml.setTitle(post.getTitle());
+        postXml.setGroup(post.getGroup());
         postXml.setCreatedDate(post.getDateString());
         postXml.setText(post.getText());
         if(post.isUpdated())
@@ -229,6 +240,8 @@ public class PostsServlet extends HttpServlet {
     //Method to display the edit post form
     private void displayEditPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Post post = pm.search(Integer.parseInt(request.getParameter("postId")));
+        ArrayList<String> permissions = getUserPermissions(request);
+        request.setAttribute("groups", permissions);
         request.setAttribute("attachmentNames", post.getAttachmentNames());
         request.setAttribute("post", post);
         request.getRequestDispatcher("posts/post-data.jsp").forward(request, response);
@@ -252,6 +265,17 @@ public class PostsServlet extends HttpServlet {
 		}
     }
 
+    //Get user group permissions
+    @SuppressWarnings("unchecked")
+    private ArrayList<String> getUserPermissions(HttpServletRequest request){
+        ArrayList<String> permissions = new ArrayList<>();
+        if(request.getSession().getAttribute("permissions") instanceof ArrayList) {
+            permissions = (ArrayList<String>)request.getSession().getAttribute("permissions");
+        }
+
+        return permissions;
+    }
+
     //Method to modify post
     private void modifyPost(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException {
         // new attachments
@@ -263,8 +287,9 @@ public class PostsServlet extends HttpServlet {
         String title = request.getParameter("title");
         ZonedDateTime date = ZonedDateTime.now();
         String newPostDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'").format(date);
+        String group = request.getParameter("groups");
 
-        pm.updatePost(postID, title, postText, newPostDate, attachmentFiles, uploadPath);
+        pm.updatePost(postID, title, postText, newPostDate, attachmentFiles, uploadPath, group);
         HttpSession session = request.getSession();
         session.setAttribute("modified", true);
         response.sendRedirect("posts");
@@ -279,14 +304,17 @@ public class PostsServlet extends HttpServlet {
         String user = (String)request.getSession().getAttribute("user");
         ZonedDateTime date = ZonedDateTime.now();
         String newPostDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'").format(date);
+        String group = request.getParameter("groups");
 
         // Upload the file into a directory
         String uploadPath = getServletConfig().getServletContext().getRealPath("WEB-INF" + File.separator+"attachments");
         attachmentFiles = uploadFile(uploadPath, request, attachmentFiles);
 
         HttpSession session = request.getSession();
-        session.setAttribute("added", true);
-        pm.createPost(user, postText, newPostDate, title, attachmentFiles, uploadPath);
+        Post newPost = pm.createPost(user, postText, newPostDate, title, attachmentFiles, uploadPath, group);
+        if(newPost != null)
+            session.setAttribute("added", true);
+
         response.sendRedirect("posts");
     }
 

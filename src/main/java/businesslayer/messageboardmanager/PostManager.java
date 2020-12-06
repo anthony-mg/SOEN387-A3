@@ -33,18 +33,18 @@ public class PostManager {
 	 * @return the created post
 	 */
 
-	public Post createPost(String user, String text, String postedDate, String title, ArrayList<Attachment> attachmentFiles, String uploadPath) {
+	public Post createPost(String user, String text, String postedDate, String title, ArrayList<Attachment> attachmentFiles, String uploadPath,String group) {
 		UserPostDao upd = new UserPostDao();
-		int postId = upd.add(text,user,postedDate,title);
+		int postId = upd.add(text,user,postedDate,title,group);
 		HashMap<Integer,String> attachmentNames = upd.upload(postId, attachmentFiles, uploadPath);
 
-		Post post = new Post(user,text, HashtagManager.getHashtags(text), postId, postedDate, title, attachmentNames);
+		Post post = new Post(user,text, HashtagManager.getHashtags(text), postId, postedDate, title, attachmentNames, group);
 		posts.add(post);
 		return post;
 	}
 
-	public Post createPost(int postID, String user, String text, String postedDate, String title, HashMap<Integer,String> attachmentNames,boolean updated, String updatedDate) {
-		Post post = new Post(user,text, HashtagManager.getHashtags(text), postID, postedDate, title, attachmentNames, updated, updatedDate);
+	public Post createPost(int postID, String user, String text, String postedDate, String title, HashMap<Integer,String> attachmentNames,boolean updated, String updatedDate, String group) {
+		Post post = new Post(user,text, HashtagManager.getHashtags(text), postID, postedDate, title, attachmentNames, updated, updatedDate, group);
 		posts.add(post);
 		return post;
 	}
@@ -102,11 +102,11 @@ public class PostManager {
 	 * @param postId ID of the post to update
 	 * @return the updated post
 	 */
-	public Post updatePost(int postId, String title, String postText, String newPostDate, ArrayList<Attachment> attachmentFiles, String uploadPath) {
+	public Post updatePost(int postId, String title, String postText, String newPostDate, ArrayList<Attachment> attachmentFiles, String uploadPath, String group) {
 		UserPostDao upd = new UserPostDao();
 
 		HashMap<Integer,String> attachmentNames = upd.upload(postId, attachmentFiles, uploadPath);
-		upd.update(postId,postText,newPostDate,title);
+		upd.update(postId,postText,newPostDate,title, group);
 		ArrayList<String> postData = upd.getPost(postId);
 
 		Post updatePost = null;
@@ -119,6 +119,7 @@ public class PostManager {
 		updatePost.setHashtags(HashtagManager.getHashtags(postData.get(0)));
 		updatePost.setUpdatedDate(ZonedDateTime.parse(postData.get(1),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss z" )));
 		updatePost.setTitle(postData.get(2));
+		updatePost.setGroup(postData.get(3));
 
 		HashMap<Integer,String> current = updatePost.getAttachmentNames();
 		current.putAll(attachmentNames);
@@ -154,6 +155,38 @@ public class PostManager {
 		for(int i = posts.size() - 1, j = 0; i >= 0 && j != config.getMaxPosts(); i--, j++) {
 			searchResult.add(posts.get(i));
 		}
+		return searchResult;
+	}
+
+	/**
+	 * Lists posts restricted by group permissions based on user membership
+	 * @return ArrayList of the search results.
+	 */
+	public ArrayList<Post> search_by_groups(ArrayList<String> permissions){
+		ArrayList<Post> searchResult = new ArrayList<Post>();
+
+		if(permissions.contains("admin")){
+			for(int i = posts.size() - 1; i >= 0; i--) {
+				searchResult.add(posts.get(i));
+			}
+		}
+		else{
+			for(int i = posts.size() - 1; i >= 0; i--) {
+				Post post = posts.get(i);
+				String postGroup = post.getGroup();
+
+				if(postGroup.equals("public"))
+					searchResult.add(post);
+				else if(permissions.contains(postGroup))
+					searchResult.add(post);
+			}
+		}
+
+		if(!searchResult.isEmpty()){
+			if(searchResult.size() > config.getMaxPosts())
+				searchResult = new ArrayList<Post>(searchResult.subList(0, (int) config.getMaxPosts()));
+		}
+
 		return searchResult;
 	}
 
