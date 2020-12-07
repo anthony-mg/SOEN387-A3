@@ -5,6 +5,7 @@ import businesslayer.messageboardmanager.PostManager;
 import util.JDBCutils;
 
 import java.io.*;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserPostDao {
-    public int add(String post,String user,String date,String title){//String id
+    public int add(String post,String user,String date,String title, String group){
         int newID = 0;
-        String sql = "insert into userpost (post,user,date,title) values(?,?,?,?)";
+        String sql = "insert into userpost (post,user,date,title,post_group) values (?,?,?,?,?)";
         JDBCutils util = new JDBCutils();
         PreparedStatement ps = util.createStatementWithKeys(sql);
         try {
@@ -22,6 +23,8 @@ public class UserPostDao {
             ps.setString(2, user);
             ps.setString(3, date);
             ps.setString(4, title);
+            ps.setString(5, group);
+
             int insertedRow = ps.executeUpdate();
 
             if (insertedRow == 0) {
@@ -139,9 +142,9 @@ public class UserPostDao {
         return deleted;
     }
 
-    public void update(int postId,String post,String date, String title){
+    public void update(int postId,String post,String date, String title, String group){
 
-        String sql = "update userpost set post=?,last_modified=?,title=?,`update`=? where id=?";
+        String sql = "update userpost set post=?,last_modified=?,title=?,`update`=?, post_group=? where id=?";
         JDBCutils util = new JDBCutils();
         PreparedStatement ps = util.createStatement(sql);
         try {
@@ -151,7 +154,8 @@ public class UserPostDao {
             ps.setString(3,title);
             int update = 1;
             ps.setInt(4, update);
-            ps.setInt(5,postId);
+            ps.setString(5,group);
+            ps.setInt(6,postId);
 
 
             ps.executeUpdate();
@@ -255,6 +259,7 @@ public class UserPostDao {
                 postData.add(rs.getString("post"));
                 postData.add(rs.getString("last_modified"));
                 postData.add(rs.getString("title"));
+                postData.add(rs.getString("post_group"));
             }
 
         }catch(SQLException e){
@@ -355,8 +360,9 @@ public class UserPostDao {
         String postedDate;
         String updatedDate = "";
         String postTitle;
+        String group;
         int mupdate;
-        boolean r;
+        boolean updated;
         JDBCutils util = new JDBCutils();
 
         String sql = "select * from UserPost";
@@ -372,11 +378,12 @@ public class UserPostDao {
                postedDate = rs.getString("date");
                postTitle = rs.getString("title");
                mupdate = rs.getInt("update");
+               group = rs.getString("post_group");
                if(mupdate==0){
-                   r=false;
+                   updated=false;
                }
                else{
-                   r=true;
+                   updated=true;
                    updatedDate = rs.getString("last_modified");
                }
 
@@ -394,7 +401,7 @@ public class UserPostDao {
                    attachmentNames.put(attachmentID, attachmentName);
                }
 
-               pm.createPost(postID, userName, postMessage, postedDate, postTitle, attachmentNames,r, updatedDate);
+               pm.createPost(postID, userName, postMessage, postedDate, postTitle, attachmentNames,updated, updatedDate, group);
             }
         }catch(SQLException e){
             e.printStackTrace();

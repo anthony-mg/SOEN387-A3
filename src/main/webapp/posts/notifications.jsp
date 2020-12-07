@@ -58,3 +58,10 @@
     </div>
     <c:remove var="deletedAttachment" scope="session" />
 </c:if>
+<c:if test="${sessionScope.emptyPosts != null}">
+    <div class="alert alert-info alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p>Unfortunately there are no posts to display. Please create a new post or login with different group permissions</p>
+    </div>
+    <c:remove var="emptyPosts" scope="session" />
+</c:if>

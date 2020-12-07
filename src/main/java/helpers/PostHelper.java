@@ -15,18 +15,22 @@ public class PostHelper implements java.io.Serializable{
     private String title;
     private String createdDate;
     private String text;
+    private String group;
+    private boolean isAdmin;
 
     public PostHelper(){
 
     }
 
-    public PostHelper(Post post, String userName){
+    public PostHelper(Post post, String userName, boolean isAdmin){
         setPost(post);
         setUser(userName);
         setPostId(post.getPostId());
         setTitle(post.getTitle());
         setText(post.getText());
+        setGroup(post.getGroup());
         setCreatedDate(post.getDateString());
+        setIsAdmin(isAdmin);
     }
 
     public void setPost(Post post)
@@ -78,6 +82,22 @@ public class PostHelper implements java.io.Serializable{
         this.text = text;
     }
 
+    public String getGroup(){
+        return group;
+    }
+
+    public void setGroup(String group){
+        this.group = group;
+    }
+
+    public boolean getIsAdmin(){
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin){
+        this.isAdmin = isAdmin;
+    }
+
     public String getUpdatedDate(){
         StringBuilder result = new StringBuilder();
         if(post.isUpdated()){
@@ -111,7 +131,7 @@ public class PostHelper implements java.io.Serializable{
         String contextPath = decodedPath.substring(decodedPath.lastIndexOf("/"));
 
         StringBuilder result = new StringBuilder();
-        if(post.getUser().equals(user)){
+        if(post.getUser().equals(user) || isAdmin){
             String editButton = "<a class='btn btn-info btn-lg btn-secondary btn-block' href='"+ contextPath + "/edit?postId=" + post.getPostId() + "'>edit</a>";
             result.append(editButton);
         }
