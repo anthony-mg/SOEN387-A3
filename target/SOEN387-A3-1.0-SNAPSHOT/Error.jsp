@@ -11,10 +11,11 @@
     <title>MessageBoard</title>
 </head>
 <body>
-<h1>Registration Page</h1>
+<h1>Error Handling Page</h1>
 <h2>This functionality is still not developed</h2>
-<a href="#" onclick="javascript:history.back(-1);">back</a>
+<h2><%=request.getAttribute("errorMsg")%></h2>
+<a href="LoginPage.jsp">back</a>
 
-
+<!--onclick="history.back(-1);"-->
 </body>
 </html>
