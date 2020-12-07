@@ -367,6 +367,7 @@ public class PostsServlet extends HttpServlet {
     private void searchPosts(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ArrayList<Post> posts = null;
         ArrayList<String> searchTags = new ArrayList<String>();
+        ArrayList<String> permissions = getUserPermissions(request);
         String user = request.getParameter("user");
         String dateFrom = request.getParameter("from");
         String dateTo = request.getParameter("to");
@@ -381,32 +382,37 @@ public class PostsServlet extends HttpServlet {
         if(user != null && !user.isEmpty()){
             if(datesSelected){
                 if(!searchTags.isEmpty())
-                    posts = pm.search(user, searchTags, from, to);
+                    posts = pm.search(user, searchTags, from, to, permissions);
                 else
-                    posts = pm.search(user, from, to);
+                    posts = pm.search(user, from, to, permissions);
             }
             else if(!searchTags.isEmpty()){
-                posts = pm.search(user, searchTags);
+                posts = pm.search(user, searchTags, permissions);
             }
 
             else
-                posts = pm.search(user);
+                posts = pm.searchByUser(user, permissions);
         }
 
         else if(datesSelected){
             if(!searchTags.isEmpty()){
-                posts = pm.search(searchTags, from, to);
+                posts = pm.search(searchTags, from, to, permissions);
             }
             else
-                posts = pm.search(from, to);
+                posts = pm.search(from, to, permissions);
         }
 
         else if(!searchTags.isEmpty()){
-            posts = pm.search(searchTags);
+            posts = pm.search(searchTags, permissions);
         }
 
         else
-            posts = pm.search();
+            posts = pm.search_by_groups(permissions);
+
+        if(posts == null || posts.isEmpty()){
+            HttpSession session = request.getSession();
+            session.setAttribute("emptyPosts", true);
+        }
 
         request.setAttribute("posts", posts);
         request.getRequestDispatcher("posts/list-posts.jsp").forward(request, response);

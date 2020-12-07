@@ -19,9 +19,15 @@
         html,
         body {
             height: 100%;
+            width: 100%;
         }
 
         body {
+            background: url('img/intro-bg.jpg') no-repeat bottom center scroll;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
             display: -ms-flexbox;
             display: -webkit-box;
             display: flex;
@@ -33,7 +39,7 @@
             justify-content: center;
             padding-top: 40px;
             padding-bottom: 40px;
-            background-color: #f5f5f5;
+            background-color: #eee;
         }
 
         .form-signin {
@@ -41,6 +47,10 @@
             max-width: 330px;
             padding: 15px;
             margin: 0 auto;
+        }
+        .form-signin .form-signin-heading{
+            margin-bottom: 10px;
+            color: #FFFFFF;
         }
         .form-signin .checkbox {
             font-weight: 400;
@@ -56,7 +66,7 @@
             z-index: 2;
         }
         .form-signin input[type="email"] {
-            margin-bottom: -1px;
+            margin-bottom: 10px;
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
         }
@@ -65,19 +75,32 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
+        .form-signin .button
+        {
+            display: inline-block;
+            letter-spacing: 0.10em;
+            margin-bottom: 1.5em;
+            padding: 0.5em 5em 0.5em 6em;
+            border: 2px solid rgba(255,255,255,1);
+            border-radius: 6px;
+            font-size: 18px;
+            color: #FFF;
+            width: 100%;
+            background: transparent;
+        }
 
     </style>
     <title>Login Page</title>
 </head>
 <body class="text-center">
 <form class="form-signin" action="${pageContext.request.contextPath}/LoginServlet" method="post">
-    <h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
+    <h1 class="h3 mb-3 form-signin-heading">Please Login</h1>
     <label for="inputEmail" class="sr-only">user@email.com</label>
     <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <button class="btn btn-lg btn-secondary btn-block" type="button" onclick = "window.location.href = 'Error.jsp'">Register</button>
+    <button class="button" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-outline-primary btn-block" type="button" onclick = "window.location.href = 'Error.jsp'">Register</button>
     <%
         if(request.getAttribute("loginError")!=null){
     %>

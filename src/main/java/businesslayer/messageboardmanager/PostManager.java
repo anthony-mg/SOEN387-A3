@@ -163,24 +163,7 @@ public class PostManager {
 	 * @return ArrayList of the search results.
 	 */
 	public ArrayList<Post> search_by_groups(ArrayList<String> permissions){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
-
-		if(permissions.contains("admin")){
-			for(int i = posts.size() - 1; i >= 0; i--) {
-				searchResult.add(posts.get(i));
-			}
-		}
-		else{
-			for(int i = posts.size() - 1; i >= 0; i--) {
-				Post post = posts.get(i);
-				String postGroup = post.getGroup();
-
-				if(postGroup.equals("public"))
-					searchResult.add(post);
-				else if(permissions.contains(postGroup))
-					searchResult.add(post);
-			}
-		}
+		ArrayList<Post> searchResult = filterPosts(permissions, posts);;
 
 		if(!searchResult.isEmpty()){
 			if(searchResult.size() > config.getMaxPosts())
@@ -203,14 +186,20 @@ public class PostManager {
 	 * @param user username
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(String user){
+	public ArrayList<Post> searchByUser(String user, ArrayList<String> permissions){
 		ArrayList<Post> searchResult = new ArrayList<Post>();
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
 		for(Post p : posts) {
 			if(p.getUser().equals(user)) {
-				searchResult.add(p);
+				tempPosts.add(p);
 			}
 		}
-		Collections.reverse(searchResult);
+
+		searchResult = filterPosts(permissions, tempPosts);
+
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+		
 		return searchResult;
 	}
 
@@ -234,13 +223,17 @@ public class PostManager {
 	 * @param hashtags
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(ArrayList<String> hashtags){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
+	public ArrayList<Post> search(ArrayList<String> hashtags, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
 		for(Post p: posts) {
 			if(HashtagManager.hashtagsContain(p.getHashtags(), hashtags))
-				searchResult.add(p);
+				tempPosts.add(p);
 		}
-		Collections.reverse(searchResult);
+		searchResult = filterPosts(permissions, tempPosts);
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
 	}
 	
@@ -250,15 +243,22 @@ public class PostManager {
 	 * @param endDate
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(ZonedDateTime startDate, ZonedDateTime endDate){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
+	public ArrayList<Post> search(ZonedDateTime startDate, ZonedDateTime endDate, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
+
 		for(Post p : posts) {
 			//if current post's date > startDate AND current post's date is < endDate	
 			if(!(p.getDate().compareTo(startDate) < 0 || p.getDate().compareTo(endDate) > 0)) {
-				searchResult.add(p);
+				tempPosts.add(p);
 			}
 		}
-		Collections.reverse(searchResult);
+
+		searchResult = filterPosts(permissions, tempPosts);
+
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
 	}
 	
@@ -269,17 +269,22 @@ public class PostManager {
 	 * @param endDate
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(String user, ZonedDateTime startDate, ZonedDateTime endDate){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
-		
+	public ArrayList<Post> search(String user, ZonedDateTime startDate, ZonedDateTime endDate, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
+
 		for(Post p : posts) {
 			if(p.getUser().equals(user)) {
 				if(!(p.getDate().compareTo(startDate) < 0 || p.getDate().compareTo(endDate) > 0)) {
-					searchResult.add(p);
+					tempPosts.add(p);
 				}
 			}
 		}
-		Collections.reverse(searchResult);
+
+		searchResult = filterPosts(permissions, tempPosts);
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
 	}
 	
@@ -289,16 +294,21 @@ public class PostManager {
 	 * @param hashtags
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(String user, ArrayList<String> hashtags){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
+	public ArrayList<Post> search(String user, ArrayList<String> hashtags, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
 		for(Post p : posts) {
 			if(p.getUser().equals(user)) {
 				if(HashtagManager.hashtagsContain(p.getHashtags(), hashtags)) {
-					searchResult.add(p);
+					tempPosts.add(p);
 				}
 			}
 		}
-		Collections.reverse(searchResult);
+
+		searchResult = filterPosts(permissions, tempPosts);
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
 	}
 	
@@ -309,17 +319,21 @@ public class PostManager {
 	 * @param endDate
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(ArrayList<String> hashtags, ZonedDateTime startDate, ZonedDateTime endDate){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
+	public ArrayList<Post> search(ArrayList<String> hashtags, ZonedDateTime startDate, ZonedDateTime endDate, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
 		for(Post p : posts) {
 			//if current post's date > startDate AND current post's date is < endDate	
 			if(!(p.getDate().compareTo(startDate) < 0 || p.getDate().compareTo(endDate) > 0)) {
 				if(HashtagManager.hashtagsContain(p.getHashtags(), hashtags)) {
-					searchResult.add(p);
+					tempPosts.add(p);
 				}
 			}
 		}
-		Collections.reverse(searchResult);
+		searchResult = filterPosts(permissions, tempPosts);
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
 	}
 
@@ -331,20 +345,45 @@ public class PostManager {
 	 * @param endDate
 	 * @return ArrayList of the search results.
 	 */
-	public ArrayList<Post> search(String user, ArrayList<String> hashtags, ZonedDateTime startDate, ZonedDateTime endDate){
-		ArrayList<Post> searchResult = new ArrayList<Post>();
+	public ArrayList<Post> search(String user, ArrayList<String> hashtags, ZonedDateTime startDate, ZonedDateTime endDate, ArrayList<String> permissions){
+		ArrayList<Post> searchResult;
+		ArrayList<Post> tempPosts = new ArrayList<Post>();
 
 		for(Post p : posts) {
 			if(p.getUser().equals(user)) {
 				if(!(p.getDate().compareTo(startDate) < 0 || p.getDate().compareTo(endDate) > 0)) {
 					if(HashtagManager.hashtagsContain(p.getHashtags(), hashtags)) {
-						searchResult.add(p);
+						tempPosts.add(p);
 					}
 				}
 			}
 		}
-		Collections.reverse(searchResult);
+
+		searchResult = filterPosts(permissions, tempPosts);
+		if(!searchResult.isEmpty())
+			Collections.reverse(searchResult);
+
 		return searchResult;
+	}
+
+	private ArrayList<Post> filterPosts(ArrayList<String> permissions, ArrayList<Post> posts){
+		ArrayList<Post> filteredPosts = new ArrayList<Post>();
+
+		if(permissions.contains("admin")){
+			filteredPosts = posts;
+		}
+		else{
+			for(int i = posts.size() - 1; i >= 0; i--) {
+				Post post = posts.get(i);
+				String postGroup = post.getGroup();
+
+				if(postGroup.equals("public"))
+					filteredPosts.add(post);
+				else if(permissions.contains(postGroup))
+					filteredPosts.add(post);
+			}
+		}
+		return filteredPosts;
 	}
 
 
