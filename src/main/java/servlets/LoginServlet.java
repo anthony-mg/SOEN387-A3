@@ -28,12 +28,13 @@ public class LoginServlet extends HttpServlet {
         um = UserManagerFactory.getInstance().create(getServletContext().getRealPath("/WEB-INF/users.json").toString(),getServletContext().getRealPath("/WEB-INF/groups_definitions.json").toString());
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         boolean result = false;
         String email = request.getParameter("email");
-        String username = um.getUsernameFromEmail(email);
         String password = request.getParameter("password");
+        if(um==null){
+            if(email.contains("@gmail.com")){
 
         HttpSession session = request.getSession();
         result = um.verifyUser(username,password);
@@ -56,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.doPost(request,response);
     }
 }

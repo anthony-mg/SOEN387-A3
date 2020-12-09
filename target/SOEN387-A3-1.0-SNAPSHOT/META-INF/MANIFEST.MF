@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
 Built-By: Ivan
 Build-Jdk: 1.8.0_261
 
+=======
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: nianliu
+Build-Jdk: 12.0.2
+
+>>>>>>> servletUnitTest

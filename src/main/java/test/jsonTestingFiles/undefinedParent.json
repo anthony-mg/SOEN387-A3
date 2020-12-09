@@ -12,9 +12,7 @@
         "housefly",
         "hawk",
         "eagle",
-        "cardinal",
-        "test",
-        "test2"
+        "cardinal"
     ],
     "group_definitions": {
         "admin": "",
@@ -29,7 +27,7 @@
         "housefly": "insect",
         "hawk": "bird",
         "eagle": "bird",
-        "cardinal": "bird"
+        "cardinal": "foo"
     },
     "membership": {
         "administrator": [

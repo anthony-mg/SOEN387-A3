@@ -1,0 +1,134 @@
+{
+    "users": [
+        {
+            "name": "administrator",
+            "password": "cf835de3d4ea01367c45e412e7a9393a85a4e40af149ed8c3ed6c37c05b67b27813d7ff8072c1035cedd19415adf17128d63186f05f0d656002b0ca1c34f44a0",
+            "email": "administrator@gmail.com"
+        },
+        {
+            "name": "mammal1",
+            "password": "a00bcd993f60f62ab56611102cca70efebac1b3f56c679b4c4ec6f439227d6bf47f8e977c03649d443015abb07f370944abe6e55448d3056a379159564c88971",
+            "email": "mammal1@gmail.com"
+        },
+        {
+            "name": "mammal2",
+            "password": "cac9e68c700da9bcbfe2c2da3fbdd186b78790f651a765e3aed6721f97d15454fa354e6039bddd698f7d480111731215bd1e457d849b43cca0e72ddcebebbba7",
+            "email": "mammal2@gmail.com"
+        },
+        {
+            "name": "insect1",
+            "password": "f78c8b74d6246abadcdd643795560ee22b8401f3c3a3372c40d556421609c0e2a8271336119a3da8ab8beb0bd4dc2e3ec7d1cf201a299d3e58b65a50af4b7008",
+            "email": "insect1@gmail.com"
+        },
+        {
+            "name": "insect2",
+            "password": "e4eb1427d9e3d9af87e3ce5d414e7bc876c67e34956c3331a5899108c495ee29260b2347066f89efcec2cf9b34dd9c1a887b7d042a7d4902f69149f678a60acb",
+            "email": "insect2@gmail.com"
+        },
+        {
+            "name": "bird1",
+            "password": "988d1d05c5113751674312048b3d3db3e911a628a7116e58adb6d784ad6aa30d85e613701e7a7fe26151c0c06cd037ba048d211f8d58c4c7042032d49e05ba24",
+            "email": "bird1@gmail.com"
+        },
+        {
+            "name": "bird2",
+            "password": "ef32b774a6bea750230c7c8aa25cd65954f494c9f210c1427cd65cb7e15013deca7a6ae7613464be7e5b8ea810892e34d33e11d653fc994bc068276e5b824123",
+            "email": "bird2@gmail.com"
+        },
+        {
+            "name": "dog1",
+            "password": "543dfbbbf87082ebbee07723ca43ebf1d6e31a681957ca79cc5ea89df3c7b16ac40c245421d5c105633721d52ad15e29d10bc8af1379956d72c550fef507451e",
+            "email": "dog1@gmail.com"
+        },
+        {
+            "name": "dog2",
+            "password": "cfdc0cde89e26b62f62b53fe228087ab1cb27a308606af6043bedb4607af05b3995453d272fbb53584e0fcade0b94b24e814e540aea3c665d570ebba8d3cd0fe",
+            "email": "dog2@gmail.com"
+        },
+        {
+            "name": "elephant1",
+            "password": "9628c82557c673eb99d42201453fe901ab6b074a4cdb1f2b389939f7598cdf8296bfc2a4ba0cc40aff060c045e029ba194602f252a502403f85d4359a39345c5",
+            "email": "elephant1@gmail.com"
+        },
+        {
+            "name": "elephant2",
+            "password": "6a0bc1755f3bcb60dc672242fe1c949c1d0217775e66f141f172ed251b6d0f127a36d2699ac95dfa0ffbfcfbd40f117d5eef910e541e9910d7a887aa07c49e42",
+            "email": "elephant2@gmail.com"
+        },
+        {
+            "name": "panda1",
+            "password": "21bf2253f048681038fff13094c88664569e9ea1d98ffaaf3c7479870cddb8c01ef4fa8ab88192d40079414c63608c2eb6b3b1ccffcd99022699f006cbeeac4e",
+            "email": "panda1@gmail.com"
+        },
+        {
+            "name": "panda2",
+            "password": "84d3525906205ffb43374050a0dcb7f0f11025e63db4bd52ca87b2dcdb7e889798b49c17dbdb776ce104c98069f5ad3224fcb42d4a9932f73f05627af3a07d37",
+            "email": "panda2@gmail.com"
+        },
+        {
+            "name": "butterfly1",
+            "password": "9cf9812f9ab3beacc137e5940adab4651a74bb0e8c8eab1e3685f0eeb29042d563dfa4654f0c06fd73b1864cca538b2ecc4575073fdbd18d6f7caebc42f0f701",
+            "email": "butterfly1@gmail.com"
+        },
+        {
+            "name": "butterfly2",
+            "password": "506ab7253fd5f0e1462421c663fd5207ab5234c0917f9f0a9b44d7fe6cb75423bdeb8196616c8be96d796ba6d973a8fbc194ee6c82ed220041002ece3ce26df7",
+            "email": "butterfly2@gmail.com"
+        },
+        {
+            "name": "grasshopper1",
+            "password": "ba976e5668f17310b83128b7e804def6cfa6e30279b5734870ee8f434d7441ccf34b763405defc13081fc50a2a76e6de0aab4fba228c8c72705fae176bbf796e",
+            "email": "grasshopper1@gmail.com"
+        },
+        {
+            "name": "grasshopper2",
+            "password": "a8c94014a8c81e7b06850ae03369d8a6ab8702c3cda8246d5e4c0ad8fa7030edd098e9eb89bf8dd7c4e6cc56313d1501c2cd0226f91287b669ef1fd2cf81753c",
+            "email": "grasshopper2@gmail.com"
+        },
+        {
+            "name": "housefly1",
+            "password": "7b20c3b698bfb8ac1e7057934d7ef751901e2dc56be341c3b3aa16e9ddb807de90db55a58efc6c6345bf5918f8ad93222ab5a4e648ea448a4e11d500c665baa",
+            "email": "housefly1@gmail.com"
+        },
+        {
+            "name": "housefly2",
+            "password": "90535dddfcd3ca8cf94a4fa2b846984581b351d330a30e7286425d66a0056daaeb79ae7c5335a7bb6b857d2e0d2bdbf911d2544a320f80d90e7d3b2339b43a9c",
+            "email": "housefly2@gmail.com"
+        },
+        {
+            "name": "hawk1",
+            "password": "97a77dd1f75438a772a4555753107fdd8ea3ef2bbe98d59c1046a1bc2700eb0efdbacc44e5f1caa6aa831007381808a61c565cd88be7f720134c442ed8b40a1",
+            "email": "hawk1@gmail.com"
+        },
+        {
+            "name": "hawk2",
+            "password": "8e7e70c5007f7829be7b7c7ca5350613432576ea49fec7e012f9efc551bfd0b9b275c12bc7e9e3385498cd3e08059099b09626d1631b48e2b6797fc05c04cffb",
+            "email": "hawk2@gmail.com"
+        },
+        {
+            "name": "eagle1",
+            "password": "f46f11179addb44ad45b60d70ac800456f8b21f9aa620d1db111a5cdf9989f5ec9ce8df5918261bec32e22998f709056c233b206176df11b1a6685f0b44bb5fe",
+            "email": "eagle1@gmail.com"
+        },
+        {
+            "name": "eagle2",
+            "password": "a2af1e8a662c85ac21e8b2d0b95d1939ecb4f9965067a9ef580a008e51bb36ec76ff86942a8f7998943860c4e506fb0d73ccd3703938e531ecf353aa430acbab",
+            "email": "eagle2@gmail.com"
+        },
+        {
+            "name": "cardinal1",
+            "password": "1435a11e1126a0f6d46004a85239e149cddfea21b368caa067cf593964e4a85ef2fca2cacdd7473bc5f8e20af8939e68b8310ae77cec9546bf3750ebf3d81797",
+            "email": "cardinal1@gmail.com"
+        },
+        {
+            "name": "cardinal2",
+            "password": "d92b7224bf9594c22026eb26ba98483f00442dfed4924dc2185a657e5c0020c6bb632b7f0a28a6ee7fde0a518f0a2c01ea7ea8303cfd078b422bee742aaa1f1a",
+            "email": "cardinal2@gmail.com"
+        },
+        {
+            "name": "testUser",
+            "password": "d92b7224bf9594c22026eb26ba98483f00442dfed4924dc2185a657e5c0020c6bb632b7f0a28a6ee7fde0a518f0a2c01ea7ea8303cfd078b422bee742aaa1f1a",
+            "email": "testUser@gmail.com"
+        }
+    ]
+}

@@ -13,8 +13,8 @@
         "hawk",
         "eagle",
         "cardinal",
-        "test",
-        "test2"
+        "testGroup",
+        "testGroup2"
     ],
     "group_definitions": {
         "admin": "",
@@ -29,9 +29,14 @@
         "housefly": "insect",
         "hawk": "bird",
         "eagle": "bird",
-        "cardinal": "bird"
+        "cardinal": "bird",
+        "testGroup": "testGroup2",
+        "testGroup2": "testGroup"
     },
     "membership": {
+        "testUser": [
+            "testGroup"
+        ],
         "administrator": [
             "admin"
         ],
