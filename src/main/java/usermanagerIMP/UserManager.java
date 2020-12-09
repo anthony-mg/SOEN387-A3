@@ -125,7 +125,7 @@ public class UserManager implements UserManagerInterface{
 	}
 	
 	@Override
-	public boolean verifyGroupDefinitonsFile() throws UndefinedUserException, UndefinedGroupException {
+	public boolean verifyGroupDefinitonsFile() throws UndefinedUserException, UndefinedGroupException, MissingGroupDefinitionException {
 		try {
 			JsonReader groupReader = Json.createReader(new FileInputStream(groupFilepath));
 			JsonObject groupsJson = groupReader.readObject();
@@ -165,7 +165,15 @@ public class UserManager implements UserManagerInterface{
 							new Throwable(group.toString().substring(1, group.toString().length()-1)));
 				}
 			}
-			
+
+			for(JsonValue group: groupNames) {
+
+				JsonValue temp = groupDefs.get(group.toString());
+				if(temp == null) {
+					throw new MissingGroupDefinitionException("Missing Group Definiton for " + group + " in " + groupFilepath,
+							new Throwable(group.toString().substring(1,group.toString().length()-1)));
+				}
+			}
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -208,6 +216,7 @@ public class UserManager implements UserManagerInterface{
 					username = tempUser.getString(("email"));
 				}
 			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
