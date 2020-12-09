@@ -33,27 +33,26 @@ public class LoginServlet extends HttpServlet {
         boolean result = false;
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        if(um==null){
-            if(email.contains("@gmail.com")){
+        if(um==null) {
+            if (email.contains("@gmail.com")) {
 
-        HttpSession session = request.getSession();
-        result = um.verifyUser(username,password);
-        if(result) {
-            try {
-                ArrayList<String> permissions = um.getGroupsForUser(username);
-                session.setAttribute("permissions",permissions);
-            } catch (CircularGroupDefinitionException e) {
-                e.printStackTrace();
+            } else {
+                int i = 1 / 0;
             }
-            session.setAttribute("email",email);
-            session.setAttribute("user", username);
-            session.setAttribute("welcome", true);
-            response.sendRedirect(request.getContextPath() + "/posts");
         }else{
-            request.setAttribute("loginError","Email or Password is incorrect");
-            request.getRequestDispatcher("/LoginPage.jsp").forward(request,response);
+            String username = um.getUsernameFromEmail(email);
+            HttpSession session = request.getSession();
+            result = um.verifyUser(username,password);
+            if(result) {
+                session.setAttribute("email",email);
+                session.setAttribute("user", username);
+                session.setAttribute("welcome", true);
+                response.sendRedirect(request.getContextPath() + "/posts");
+            }else{
+                request.setAttribute("loginError","Email or Password is incorrect");
+                request.getRequestDispatcher("/LoginPage.jsp").forward(request,response);
+            }
         }
-
 
     }
 
