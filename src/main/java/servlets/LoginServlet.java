@@ -44,6 +44,12 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             result = um.verifyUser(username,password);
             if(result) {
+                try {
+                    ArrayList<String> permissions = um.getGroupsForUser(username);
+                    session.setAttribute("permissions",permissions);
+                } catch (CircularGroupDefinitionException e) {
+                    e.printStackTrace();
+                }
                 session.setAttribute("email",email);
                 session.setAttribute("user", username);
                 session.setAttribute("welcome", true);
